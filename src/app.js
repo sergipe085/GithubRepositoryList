@@ -13,7 +13,6 @@ const repositories = [];
 
 app.get("/repositories", (request, response) => {
   // TODO list all the repositories
-
   return response.json(repositories);
 });
 
@@ -34,6 +33,11 @@ app.put("/repositories/:id", (request, response) => {
   const { title, url, techs } = request.body;
 
   const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
+
+  if (repositoryIndex < 0) {
+    return response.status(400).json({ "error": "Project not founded!" });
+  }
+
   const repository = { id: repositories[repositoryIndex].id, title: title, url: url, techs: techs, likes: repositories[repositoryIndex].likes };
   repositories[repositoryIndex] = repository;
 
@@ -60,6 +64,11 @@ app.post("/repositories/:id/like", (request, response) => {
   const { id } = request.params;
 
   const repositoryIndex = repositories.findIndex((repo) => repo.id === id);
+
+  if (repositoryIndex < 0) {
+    return response.status(400).json({ "error": "Project not founded!" });
+  }
+
   repositories[repositoryIndex].likes += 1;
 
   return response.json(repositories[repositoryIndex]);
