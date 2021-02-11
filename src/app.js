@@ -41,11 +41,28 @@ app.put("/repositories/:id", (request, response) => {
 });
 
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+  // TODO delete repository by id
+  const { id } = request.params;
+
+  const repositoryIndex = repositories.findIndex((repo) => repo.id === id);
+
+  if (repositoryIndex < 0) {
+    return response.status(400).json("error: Repository not founded!");
+  }
+
+  repositories.splice(repositoryIndex, 1);
+
+  return response.status(204).send();
 });
 
 app.post("/repositories/:id/like", (request, response) => {
-  // TODO
+  // TODO aumentar o numero de likes do repositorio com o id = :id
+  const { id } = request.params;
+
+  const repositoryIndex = repositories.findIndex((repo) => repo.id === id);
+  repositories[repositoryIndex].likes += 1;
+
+  return response.json(repositories[repositoryIndex]);
 });
 
 module.exports = app;
