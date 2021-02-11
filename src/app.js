@@ -29,7 +29,15 @@ app.post("/repositories/", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  // TODO update title url and techs of repository with id
+  const { id } = request.params;
+  const { title, url, techs } = request.body;
+
+  const repositoryIndex = repositories.findIndex((repository) => repository.id === id);
+  const repository = { id: repositories[repositoryIndex].id, title: title, url: url, techs: techs, likes: repositories[repositoryIndex].likes };
+  repositories[repositoryIndex] = repository;
+
+  return response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
